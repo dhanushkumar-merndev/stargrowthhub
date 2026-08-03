@@ -1,0 +1,444 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Star Growth Hub — design system
+   White editorial base, near-black type, one disciplined red
+   accent. Generous whitespace, thin rules, big confident
+   headlines. Every animation is CSS so the HTML ships fully
+   rendered and crawlable.
+   ============================================================ */
+
+@theme {
+  /* Surfaces */
+  --color-paper: #ffffff;
+  --color-paper-2: #faf8f7; /* warm off-white band */
+  --color-paper-3: #f3efed; /* stronger band / hover */
+  --color-edge: #14141c17; /* hairline rules */
+
+  /* Accent — used sparingly, on purpose */
+  --color-brand: #e01b2d;
+  --color-brand-soft: #ff5f6d;
+  --color-brand-deep: #a30f1e;
+  --color-brand-tint: #fdf1f2;
+
+  /* Type */
+  --color-ink: #14141c;
+  --color-muted: #55555f;
+  --color-faint: #8b8b96;
+
+  --font-sans: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: light;
+  --nav-h: 4.5rem;
+}
+
+* {
+  border-color: var(--color-edge);
+}
+
+html {
+  /* Native fallback. Lenis stamps `.lenis-smooth` on <html> and the rule
+     below turns this off, so the two never fight. */
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + 1rem);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* --- Lenis ---------------------------------------------------- */
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Lenis normally kills pointer events on every iframe so they can't swallow
+   wheel events. The map is meant to be draggable, so it opts back in. */
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] iframe {
+  pointer-events: auto;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--color-paper-2); }
+::-webkit-scrollbar-thumb {
+  background: #14141c26;
+  border-radius: 99px;
+  border: 3px solid var(--color-paper-2);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-brand); }
+
+/* ------------------------------------------------------------
+   Typography helpers
+   ------------------------------------------------------------ */
+
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--color-brand-deep) 0%,
+    var(--color-brand) 45%,
+    var(--color-brand-soft) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 9s ease-in-out infinite alternate;
+}
+
+.text-balance-tight { text-wrap: balance; }
+
+/* ------------------------------------------------------------
+   Surfaces
+   ------------------------------------------------------------ */
+
+/* The workhorse card: white, hairline border, whisper of shadow. */
+.panel {
+  background: var(--color-paper);
+  border: 1px solid var(--color-edge);
+  box-shadow:
+    0 1px 2px rgba(20, 20, 28, 0.04),
+    0 8px 24px -16px rgba(20, 20, 28, 0.12);
+}
+
+.panel-tint {
+  background: var(--color-paper-2);
+  border: 1px solid var(--color-edge);
+}
+
+/* Lift + red border on hover. */
+.card-hover {
+  transition:
+    transform 0.5s var(--ease-out-expo),
+    box-shadow 0.5s var(--ease-out-expo),
+    border-color 0.4s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--color-brand) 38%, transparent);
+  box-shadow:
+    0 2px 4px rgba(20, 20, 28, 0.04),
+    0 22px 44px -22px rgba(224, 27, 45, 0.3);
+}
+
+/* Cursor-tracking wash. --mx/--my are set by ScrollFX. */
+.spotlight { position: relative; }
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(224, 27, 45, 0.055),
+    transparent 66%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.spotlight:hover::after { opacity: 1; }
+
+/* ------------------------------------------------------------
+   Ambient background layers
+   ------------------------------------------------------------ */
+
+/* Soft off-white/red washes — barely there, just enough to stop
+   large white areas reading as flat. */
+.wash {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Fine dot lattice. Reads as texture rather than graph paper — the ruled
+   grid it replaced was too literal and fought with the type. */
+.bg-dots {
+  background-image: radial-gradient(rgba(20, 20, 28, 0.085) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse 85% 70% at 50% -5%, #000 10%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 70% at 50% -5%, #000 10%, transparent 72%);
+}
+
+/* A single hairline rule per axis, far apart — structure without a cage. */
+.bg-rules {
+  background-image:
+    linear-gradient(to right, rgba(20, 20, 28, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 20, 28, 0.05) 1px, transparent 1px);
+  background-size: 220px 220px;
+  mask-image: radial-gradient(ellipse 80% 65% at 50% 0%, #000 5%, transparent 68%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 0%, #000 5%, transparent 68%);
+}
+
+.dot-grid {
+  background-image: radial-gradient(rgba(20, 20, 28, 0.075) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Diagonal hatch used behind the blog card headers. */
+.bg-hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.09) 0 1px,
+    transparent 1px 9px
+  );
+}
+
+/* ------------------------------------------------------------
+   Scroll reveal — content is visible by default and only hidden
+   once JS confirms it can animate it back in. Crawlers and
+   no-JS users always get the full, painted page.
+   ------------------------------------------------------------ */
+
+[data-reveal] { opacity: 1; }
+
+html.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.js-reveal [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ------------------------------------------------------------
+   Keyframes
+   ------------------------------------------------------------ */
+
+@keyframes gradient-pan {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(3%, -4%, 0) scale(1.07); }
+  66%      { transform: translate3d(-4%, 3%, 0) scale(0.95); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+
+@keyframes pulse-ring {
+  0%        { transform: scale(0.9); opacity: 0.65; }
+  70%, 100% { transform: scale(1.7); opacity: 0; }
+}
+
+@keyframes shimmer-sweep {
+  from { transform: translateX(-120%) skewX(-18deg); }
+  to   { transform: translateX(320%) skewX(-18deg); }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* --- globe ---------------------------------------------------- */
+
+/* Arcs fade in on load, staggered by inline animation-delay. */
+@keyframes arc-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* A short dash runs the length of each arc. pathLength="100" on the path
+   normalises every arc to the same dash scale, so one rule covers all. */
+@keyframes comet-run {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: -4; }
+}
+
+@keyframes hub-pulse {
+  0%        { transform: scale(1); opacity: 0.22; }
+  70%, 100% { transform: scale(2.6); opacity: 0; }
+}
+
+.arc-in {
+  opacity: 0;
+  animation: arc-in 1s var(--ease-out-expo) forwards;
+}
+
+.arc-comet {
+  animation: comet-run 4.5s linear infinite;
+}
+
+.hub-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hub-pulse 2.6s ease-out infinite;
+}
+
+.animate-drift     { animation: drift 24s ease-in-out infinite; }
+.animate-spin-slow { animation: spin-slow 30s linear infinite; }
+.animate-bob       { animation: bob 4.2s ease-in-out infinite; }
+
+/* Infinite keyword marquee: track holds the list twice. */
+.marquee-track { animation: marquee 40s linear infinite; }
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+.marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+
+/* Light sweep across primary buttons */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+}
+.btn-shine:hover::after { animation: shimmer-sweep 0.9s ease-out; }
+
+/* "We're open" dot */
+.ping-dot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: currentColor;
+  animation: pulse-ring 2.2s ease-out infinite;
+}
+
+/* Underline that grows in from the left on hover */
+.link-underline {
+  background-image: linear-gradient(var(--color-brand), var(--color-brand));
+  background-size: 0% 1.5px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.4s var(--ease-out-expo);
+}
+.link-underline:hover { background-size: 100% 1.5px; }
+
+/* ------------------------------------------------------------
+   Blog article typography
+   ------------------------------------------------------------ */
+
+.prose-sgh h2 {
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin: 2.75rem 0 1rem;
+  color: var(--color-ink);
+  scroll-margin-top: calc(var(--nav-h) + 2rem);
+}
+.prose-sgh h3 {
+  font-size: clamp(1.15rem, 2.4vw, 1.35rem);
+  font-weight: 600;
+  margin: 2rem 0 0.75rem;
+  color: var(--color-ink);
+}
+.prose-sgh p {
+  color: var(--color-muted);
+  line-height: 1.8;
+  margin-bottom: 1.15rem;
+  font-size: 1.05rem;
+}
+.prose-sgh ul, .prose-sgh ol {
+  margin: 0 0 1.5rem 0;
+  padding-left: 1.25rem;
+  color: var(--color-muted);
+  line-height: 1.8;
+  display: grid;
+  gap: 0.6rem;
+}
+.prose-sgh ul { list-style: none; padding-left: 0; }
+.prose-sgh ul li { position: relative; padding-left: 1.6rem; }
+.prose-sgh ul li::before {
+  content: "";
+  position: absolute;
+  left: 0.2rem;
+  top: 0.72em;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--color-brand);
+  transform: rotate(45deg);
+}
+.prose-sgh ol { list-style: decimal; }
+.prose-sgh ol li::marker { color: var(--color-brand); font-weight: 600; }
+.prose-sgh strong { color: var(--color-ink); font-weight: 600; }
+.prose-sgh a {
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ------------------------------------------------------------
+   Motion & print
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  html.js-reveal [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media print {
+  .wash, .bg-dots, .bg-rules, .dot-grid, .bg-hatch { display: none !important; }
+}
