@@ -35,7 +35,7 @@ export const site = {
    * a stranger. `pnpm build` refuses to produce a deployable site until this
    * is filled in. `pnpm dev` works regardless, so you can still preview.
    */
-  whatsappNumber: "",
+  whatsappNumber: "919150966108",
 
   /**
    * TODO - the number people should call. Leave empty and every phone link
