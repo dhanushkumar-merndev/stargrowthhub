@@ -42,7 +42,7 @@ export function Nav() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "border-b border-edge bg-paper/85 backdrop-blur-xl"
+          ? "border-b border-edge bg-paper lg:bg-paper/85 lg:backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
       style={{ height: "var(--nav-h)" }}
@@ -51,7 +51,11 @@ export function Nav() {
         className="mx-auto flex h-full max-w-7xl items-center justify-between px-5 sm:px-8"
         aria-label="Primary"
       >
-        <Link href="/" className="group relative z-10" aria-label={`${site.name} — home`}>
+        <Link
+          href="/"
+          className="group relative z-10 flex h-full shrink-0 items-center"
+          aria-label={`${site.name} — home`}
+        >
           {/* priority: the header mark is above the fold on every route. */}
           <Logo priority className="transition-transform duration-500 group-hover:scale-[1.03]" />
         </Link>
@@ -98,15 +102,20 @@ export function Nav() {
           aria-controls="mobile-menu"
           aria-label={open ? "Close menu" : "Open menu"}
         >
-          <span className="relative block h-3.5 w-5">
+          <span className="relative block h-4 w-5" aria-hidden="true">
             <span
-              className={`absolute left-0 block h-[1.5px] w-full bg-ink transition-all duration-300 ${
-                open ? "top-1/2 rotate-45" : "top-0"
+              className={`absolute left-0 top-1/2 block h-[1.5px] w-full -translate-y-1/2 bg-ink transition-all duration-300 ${
+                open ? "rotate-45" : "-translate-y-[6px]"
               }`}
             />
             <span
-              className={`absolute bottom-0 left-0 block h-[1.5px] w-full bg-ink transition-all duration-300 ${
-                open ? "bottom-1/2 -rotate-45 translate-y-1/2" : ""
+              className={`absolute left-0 top-1/2 block h-[1.5px] w-full -translate-y-1/2 bg-ink transition-all duration-300 ${
+                open ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-1/2 block h-[1.5px] w-full -translate-y-1/2 bg-ink transition-all duration-300 ${
+                open ? "-rotate-45" : "translate-y-[6px]"
               }`}
             />
           </span>
