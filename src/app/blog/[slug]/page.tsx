@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { POSTS, getPost, relatedPosts, type Block } from "@/lib/posts";
 import { RichText } from "@/components/RichText";
 import { PostCard, formatDate } from "@/components/PostCard";
+import { FaqItem } from "@/components/FaqItem";
 import { Reveal } from "@/components/Reveal";
 import { Backdrop } from "@/components/Backdrop";
+import { Breadcrumbs } from "@/components/PageHero";
 import { JsonLd } from "@/components/JsonLd";
+import { IconClock, IconWhatsApp } from "@/components/Icons";
 import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { site, whatsappLink } from "@/lib/site";
 
@@ -68,17 +70,9 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           <Backdrop />
 
           <div className="mx-auto max-w-3xl px-5 sm:px-8">
-            <nav aria-label="Breadcrumb" className="mb-7 text-[0.8rem] text-faint">
-              <Link href="/" className="link-underline hover:text-ink">
-                Home
-              </Link>
-              <span className="mx-2" aria-hidden="true">/</span>
-              <Link href="/blog/" className="link-underline hover:text-ink">
-                Insights
-              </Link>
-              <span className="mx-2" aria-hidden="true">/</span>
-              <span className="text-muted">{post.category}</span>
-            </nav>
+            <Breadcrumbs
+              crumbs={[{ label: "Insights", href: "/blog/" }, { label: post.category }]}
+            />
 
             <span className="mb-5 inline-block rounded-full bg-brand-tint px-3.5 py-1.5 text-[0.72rem] font-semibold text-brand">
               {post.category}
@@ -95,7 +89,10 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
               <span aria-hidden="true">·</span>
               <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
               <span aria-hidden="true">·</span>
-              <span>{post.readingMinutes} min read</span>
+              <span className="inline-flex items-center gap-1.5">
+                <IconClock className="h-3.5 w-3.5" />
+                {post.readingMinutes} min read
+              </span>
             </div>
           </div>
         </header>
@@ -126,6 +123,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
               rel="noopener noreferrer"
               className="btn-shine mt-6 inline-flex items-center gap-2.5 rounded-full bg-brand px-7 py-3.5 font-semibold text-white transition-all duration-300 hover:bg-brand-deep hover:scale-[1.03]"
             >
+              <IconWhatsApp className="h-5 w-5" />
               Message us on WhatsApp
             </a>
           </aside>
@@ -138,17 +136,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
               </h2>
               <div className="space-y-3">
                 {post.faqs.map((f) => (
-                  <details key={f.q} className="group panel overflow-hidden rounded-2xl open:border-brand/30">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 font-medium transition-colors hover:text-brand [&::-webkit-details-marker]:hidden">
-                      <h3 className="text-[0.95rem] font-medium">{f.q}</h3>
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-edge text-brand transition-transform duration-300 group-open:rotate-45">
-                        <svg viewBox="0 0 12 12" className="h-3 w-3" aria-hidden="true">
-                          <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                        </svg>
-                      </span>
-                    </summary>
-                    <p className="px-6 pb-6 text-[0.9rem] leading-relaxed text-muted">{f.a}</p>
-                  </details>
+                  <FaqItem key={f.q} question={f.q} answer={f.a} />
                 ))}
               </div>
             </section>

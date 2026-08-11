@@ -9,9 +9,45 @@ deploys free to Cloudflare Pages.
 ```bash
 pnpm install
 pnpm dev        # http://localhost:3000
-pnpm build      # -> ./out  (13 static pages)
+pnpm build      # -> ./out  (18 static pages)
 pnpm preview    # build, then serve ./out locally
 ```
+
+---
+
+## Site structure
+
+Each nav item is its own route, pre-rendered to static HTML. The home page
+carries a condensed version of each and links through.
+
+| Route | What's on it | Content lives in |
+|---|---|---|
+| `/` | Hero, the six practices, results, why-us, process, map, insights, FAQs, enquiry form | composed from everything below |
+| `/services/` | All six practices in full — deliverables, who it's for, timelines — plus the 21-service catalogue, industries and how pricing works | [`src/lib/services.ts`](src/lib/services.ts) |
+| `/results/` | The 5.0 rating, reviews, outcome metrics, how we measure a lead, the monthly report | [`src/lib/results.ts`](src/lib/results.ts) |
+| `/process/` | The four steps expanded, a week-by-week first month, what we need from the client | [`src/lib/process.ts`](src/lib/process.ts) |
+| `/about/` | The story, four promises, the honest comparison table, why local matters | [`src/lib/company.ts`](src/lib/company.ts) |
+| `/faq/` | 24 questions in six groups, with `FAQPage` structured data | [`src/lib/faqs.ts`](src/lib/faqs.ts) |
+| `/contact/` | Enquiry form, direct channels, map, travel directions, areas served | [`src/lib/site.ts`](src/lib/site.ts) |
+| `/blog/`, `/blog/<slug>/` | Insights index and articles | [`src/lib/posts.ts`](src/lib/posts.ts) |
+
+Every page shares [`PageHero`](src/components/PageHero.tsx) for its masthead and
+breadcrumb, and closes with [`CtaBand`](src/components/sections/CtaBand.tsx).
+Edit the data module and the home page, the dedicated page, the nav menu, the
+footer, the sitemap and the structured data all follow.
+
+### Icons
+
+Every glyph comes from **`react-icons`**, re-exported under a meaning-based name
+from [`src/components/Icons.tsx`](src/components/Icons.tsx) — Feather (`fi`) for
+UI, Font Awesome 6 (`fa6`) for brand marks, Lucide (`lu`) for the few concepts
+Feather lacks. Components import from that module, never from `react-icons`
+directly, so swapping an icon is a one-line change and `aria-hidden` is applied
+consistently. Icons render in server components, so they are inlined into the
+static HTML rather than drawn by JavaScript.
+
+The one deliberate exception is [`GlobeArcs.tsx`](src/components/GlobeArcs.tsx),
+the hero visual — that is a generated illustration, not an icon.
 
 ---
 
@@ -33,9 +69,10 @@ Nothing else needs editing to launch.
 
 ### What came from your Google Business Profile
 
-Name, category, the full 21-service list, address, the "near Bangalore One" landmark,
-opening hours (Mon–Sat 10–7, closed Sunday), the 5.0/5 rating and both public review
-quotes are all taken from the listing and live in `site.ts` or `Marquee.tsx`.
+Name, category, address, the "near Bangalore One" landmark, opening hours
+(Mon–Sat 10–7, closed Sunday) and the 5.0/5 rating live in `site.ts`. The full
+21-service list is in [`src/lib/services.ts`](src/lib/services.ts) and both
+public review quotes are in [`src/lib/results.ts`](src/lib/results.ts).
 
 **No phone number was on the listing**, and it isn't published anywhere else public —
 so it's the one detail only you can supply.
@@ -141,15 +178,18 @@ Body content is a list of typed blocks — `p`, `h2`, `h3`, `ul`, `ol`, `quote`,
   shipped HTML; JavaScript adds the class that hides them only after confirming
   it can animate them back in. No JS, or a crawler that doesn't run it, still
   sees a complete page. `prefers-reduced-motion` disables the lot.
+- **A route per intent.** Someone searching "digital marketing pricing
+  Bengaluru" lands on `/services/`, not an anchor two-thirds down the home page.
+  Each route has its own title, description, canonical and structured data.
 - **Structured data** — `LocalBusiness` + `MarketingAgency` (address, geo,
   opening hours, 5.0 aggregate rating, full service catalogue), `WebSite`,
-  `FAQPage`, `BreadcrumbList`, `BlogPosting`.
+  `Service` per practice, `HowTo` for the process, `FAQPage` (24 questions),
+  `BreadcrumbList`, `BlogPosting`.
 - **Generated social card** at `/opengraph-image`, built at compile time.
 - `sitemap.xml` and `robots.txt` generated from the same content source.
 - Geo meta tags (`geo.region`, `geo.position`, `ICBM`) for local relevance.
-- ~42 KB gzipped for the home page; Cloudflare Brotli takes it lower.
-- No icon library, no animation library, no image files on the critical path —
-  the hero visual is SVG and CSS.
+- No animation library and no image files on the critical path — the hero visual
+  is SVG and CSS, and icons are inlined SVG rendered on the server.
 
 ### After launch
 

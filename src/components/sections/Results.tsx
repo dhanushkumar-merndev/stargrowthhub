@@ -1,49 +1,10 @@
+import Link from "next/link";
+
 import { Reveal, Eyebrow } from "../Reveal";
 import { Counter } from "../Counter";
-import { StarIcon } from "./Hero";
+import { IconArrowRight, IconGoogle, IconQuote, IconStar } from "../Icons";
+import { OUTCOMES, REVIEWS } from "@/lib/results";
 import { site } from "@/lib/site";
-
-/**
- * Verbatim excerpts from the Google Business Profile review summary.
- *
- * These are the only two review quotes currently public, so they are the
- * only two shown — deliberately un-attributed, because inventing reviewer
- * names would be fabricating testimonials.
- *
- * TODO: as more reviews come in, paste the full text and the reviewer's
- * first name here. Real names with real quotes convert far better.
- */
-const REVIEWS = [
-  { quote: "Great service and professional team.", source: "Google review" },
-  { quote: "Incredible experience working with them.", source: "Google review" },
-];
-
-/**
- * TODO — REPLACE THESE WITH YOUR REAL NUMBERS, OR DELETE THE BLOCK.
- *
- * These are illustrative figures written as placeholders, not measurements
- * from your accounts. Published as-is they are unverified performance claims
- * on a live business site. Swap in figures you can evidence from a client
- * dashboard, or remove the section — the 5.0 rating and the review quotes
- * below are real and carry the section on their own.
- */
-const OUTCOMES = [
-  {
-    metric: <Counter to={214} suffix="%" />,
-    label: "average lift in organic enquiries",
-    note: "across local service clients in their first two quarters",
-  },
-  {
-    metric: <Counter to={41} suffix="%" />,
-    label: "reduction in cost per lead",
-    note: "after restructuring paid search and landing pages",
-  },
-  {
-    metric: <Counter to={2.1} decimals={1} suffix="s" />,
-    label: "typical Largest Contentful Paint",
-    note: "on the sites we build, measured on mobile field data",
-  },
-];
 
 export function Results() {
   return (
@@ -69,26 +30,36 @@ export function Results() {
                 </span>
                 <span className="mt-1 flex gap-0.5 text-brand">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <StarIcon key={i} className="h-3.5 w-3.5" />
+                    <IconStar key={i} className="h-3.5 w-3.5" />
                   ))}
                 </span>
               </div>
               <div className="h-12 w-px bg-edge" />
-              <p className="text-[0.86rem] leading-relaxed text-muted">
-                Based on <strong className="text-ink">{site.rating.count} reviews</strong> on
-                Google.
-                <br />
-                {site.hours.label}.
-              </p>
+              <div className="text-[0.86rem] leading-relaxed text-muted">
+                <p className="flex items-center gap-1.5">
+                  <IconGoogle className="h-3.5 w-3.5 shrink-0 text-faint" />
+                  Based on <strong className="text-ink">{site.rating.count} reviews</strong> on
+                  Google.
+                </p>
+                <p className="mt-0.5">{site.hours.label}.</p>
+              </div>
             </div>
+
+            <Link
+              href="/results/"
+              className="group mt-6 inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-3.5 text-sm font-medium transition-all duration-300 hover:border-brand/50 hover:bg-brand-tint"
+            >
+              See the full picture
+              <IconArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </Reveal>
 
           <div className="grid gap-4">
             {OUTCOMES.map((o, i) => (
-              <Reveal key={i} delay={i * 90}>
+              <Reveal key={o.label} delay={i * 90}>
                 <div className="panel card-hover spotlight flex items-center gap-6 rounded-2xl p-6 sm:p-7">
                   <span className="w-[5.5rem] shrink-0 font-display text-[2.1rem] font-semibold leading-none tracking-tight text-brand sm:w-28 sm:text-[2.5rem]">
-                    {o.metric}
+                    <Counter to={o.value} decimals={o.decimals} suffix={o.suffix} />
                   </span>
                   <span className="min-w-0">
                     <span className="block text-[0.95rem] font-medium text-ink">{o.label}</span>
@@ -104,15 +75,18 @@ export function Results() {
               <div className="grid gap-4 sm:grid-cols-2">
                 {REVIEWS.map((r) => (
                   <figure key={r.quote} className="panel-tint rounded-2xl p-6">
-                    <span className="mb-3 flex gap-0.5 text-brand">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <StarIcon key={i} className="h-3.5 w-3.5" />
-                      ))}
-                    </span>
-                    <blockquote className="text-[0.95rem] leading-relaxed text-ink">
-                      &ldquo;{r.quote}&rdquo;
+                    <IconQuote className="h-4 w-4 text-brand/30" />
+                    <blockquote className="mt-3 text-[0.95rem] leading-relaxed text-ink">
+                      {r.quote}
                     </blockquote>
-                    <figcaption className="mt-3 text-[0.75rem] text-faint">{r.source}</figcaption>
+                    <figcaption className="mt-4 flex items-center gap-2 border-t border-edge pt-3">
+                      <span className="flex gap-0.5 text-brand">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <IconStar key={i} className="h-3 w-3" />
+                        ))}
+                      </span>
+                      <span className="text-[0.75rem] text-faint">{r.name ?? r.source}</span>
+                    </figcaption>
                   </figure>
                 ))}
               </div>

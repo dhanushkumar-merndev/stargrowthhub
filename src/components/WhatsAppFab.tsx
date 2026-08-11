@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { site, whatsappLink } from "@/lib/site";
-import { WhatsAppGlyph } from "./LeadForm";
+import { IconWhatsApp } from "./Icons";
 
 /** Sticky WhatsApp button — appears once the visitor has scrolled past the hero. */
 export function WhatsAppFab() {
@@ -28,7 +28,7 @@ export function WhatsAppFab() {
       }`}
     >
       <span className="relative flex h-6 w-6 items-center justify-center">
-        <WhatsAppGlyph className="h-6 w-6" />
+        <IconWhatsApp className="h-6 w-6" />
       </span>
       <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-semibold transition-all duration-500 group-hover:max-w-[9rem] sm:max-w-[9rem]">
         Chat with us

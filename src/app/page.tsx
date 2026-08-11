@@ -4,14 +4,17 @@ import { Hero } from "@/components/sections/Hero";
 import { Marquee } from "@/components/sections/Marquee";
 import { Services } from "@/components/sections/Services";
 import { Results } from "@/components/sections/Results";
+import { WhyUs } from "@/components/sections/WhyUs";
 import { Process } from "@/components/sections/Process";
 import { LocalArea } from "@/components/sections/LocalArea";
 import { Gallery } from "@/components/sections/Gallery";
 import { BlogTeaser } from "@/components/sections/BlogTeaser";
-import { Faq, FAQS } from "@/components/sections/Faq";
-import { Contact, ClosingBanner } from "@/components/sections/Contact";
+import { Faq } from "@/components/sections/Faq";
+import { Contact } from "@/components/sections/Contact";
+import { CtaBand } from "@/components/sections/CtaBand";
 import { JsonLd } from "@/components/JsonLd";
 import { faqSchema } from "@/lib/schema";
+import { HOME_FAQS } from "@/lib/faqs";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -33,6 +36,7 @@ export default function HomePage() {
       <Marquee />
       <Services />
       <Results />
+      <WhyUs />
       <Process />
       <LocalArea />
       {/* Renders only when photos exist in public/images/gallery. */}
@@ -40,10 +44,11 @@ export default function HomePage() {
       <BlogTeaser />
       <Faq />
       <Contact />
-      <ClosingBanner />
+      <CtaBand />
 
-      {/* Powers the expandable FAQ rich result in Google. */}
-      <JsonLd data={faqSchema(FAQS)} />
+      {/* Powers the expandable FAQ rich result in Google. The full set lives
+          on /faq, so only the questions shown here are declared. */}
+      <JsonLd data={faqSchema(HOME_FAQS)} />
     </>
   );
 }

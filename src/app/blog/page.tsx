@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import { sortedPosts } from "@/lib/posts";
 import { PostCard } from "@/components/PostCard";
 import { Reveal, Eyebrow } from "@/components/Reveal";
 import { Backdrop } from "@/components/Backdrop";
+import { Breadcrumbs } from "@/components/PageHero";
+import { IconWhatsApp } from "@/components/Icons";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 import { site, whatsappLink } from "@/lib/site";
@@ -34,15 +35,7 @@ export default function BlogIndexPage() {
 
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <Reveal>
-            <nav aria-label="Breadcrumb" className="mb-6 text-[0.8rem] text-faint">
-              <Link href="/" className="link-underline hover:text-ink">
-                Home
-              </Link>
-              <span className="mx-2" aria-hidden="true">
-                /
-              </span>
-              <span className="text-muted">Insights</span>
-            </nav>
+            <Breadcrumbs crumbs={[{ label: "Insights" }]} />
 
             <Eyebrow>Insights</Eyebrow>
             <h1 className="text-balance-tight max-w-3xl font-display text-[clamp(2.2rem,5.4vw,3.6rem)] font-semibold leading-[1.06] tracking-[-0.035em]">
@@ -90,8 +83,9 @@ export default function BlogIndexPage() {
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-shine shrink-0 rounded-full bg-brand px-7 py-4 font-semibold text-white transition-all duration-300 hover:bg-brand-deep hover:scale-[1.03]"
+                className="btn-shine inline-flex shrink-0 items-center gap-2.5 rounded-full bg-brand px-7 py-4 font-semibold text-white transition-all duration-300 hover:bg-brand-deep hover:scale-[1.03]"
               >
+                <IconWhatsApp className="h-5 w-5" />
                 Get your free audit
               </a>
             </div>

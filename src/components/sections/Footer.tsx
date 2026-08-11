@@ -1,8 +1,28 @@
 import Link from "next/link";
+
 import { Logo } from "../Logo";
+import {
+  IconArrowUpRight,
+  IconClock,
+  IconMail,
+  IconPhone,
+  IconPin,
+  IconWhatsApp,
+  SOCIAL_ICONS,
+} from "../Icons";
 import { site, whatsappLink, hasPhone } from "@/lib/site";
-import { ALL_SERVICES } from "./Marquee";
+import { PILLARS } from "@/lib/services";
 import { sortedPosts } from "@/lib/posts";
+
+const COMPANY_LINKS = [
+  { href: "/services/", label: "Services" },
+  { href: "/results/", label: "Results & reviews" },
+  { href: "/process/", label: "How we work" },
+  { href: "/about/", label: "About us" },
+  { href: "/blog/", label: "Insights" },
+  { href: "/faq/", label: "FAQs" },
+  { href: "/contact/", label: "Free growth audit" },
+];
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -19,68 +39,84 @@ export function Footer() {
               chosen, and get paid.
             </p>
 
-            <address className="mt-6 not-italic text-[0.85rem] leading-relaxed text-faint">
-              {site.address.street}
-              <br />
-              {site.address.landmark}
-              <br />
-              {site.address.locality}
-              <br />
-              {site.address.city}, {site.address.region} {site.address.postalCode}
+            <address className="mt-6 flex gap-2.5 not-italic text-[0.85rem] leading-relaxed text-faint">
+              <IconPin className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+              <span>
+                {site.address.street}
+                <br />
+                {site.address.landmark}
+                <br />
+                {site.address.locality}
+                <br />
+                {site.address.city}, {site.address.region} {site.address.postalCode}
+              </span>
             </address>
 
-            <div className="mt-5 flex flex-col gap-1.5 text-[0.85rem]">
+            <div className="mt-5 flex flex-col gap-2 text-[0.85rem]">
               {hasPhone && (
-                <a href={site.phoneHref} className="link-underline w-fit text-muted hover:text-brand">
+                <a
+                  href={site.phoneHref}
+                  className="inline-flex w-fit items-center gap-2 text-muted transition-colors hover:text-brand"
+                >
+                  <IconPhone className="h-4 w-4 shrink-0 text-faint" />
                   {site.phone}
                 </a>
               )}
               <a
                 href={`mailto:${site.email}`}
-                className="link-underline w-fit break-all text-muted hover:text-brand"
+                className="inline-flex w-fit items-center gap-2 break-all text-muted transition-colors hover:text-brand"
               >
+                <IconMail className="h-4 w-4 shrink-0 text-faint" />
                 {site.email}
               </a>
+              <span className="inline-flex w-fit items-center gap-2 text-faint">
+                <IconClock className="h-4 w-4 shrink-0" />
+                {site.hours.label}
+              </span>
             </div>
 
             {socials.length > 0 && (
               <ul className="mt-6 flex flex-wrap gap-2">
-                {socials.map(([name, url]) => (
-                  <li key={name}>
-                    <a
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex h-9 items-center rounded-full border border-edge bg-paper px-4 text-[0.75rem] capitalize text-muted transition-all duration-300 hover:border-brand/50 hover:text-brand"
-                    >
-                      {name}
-                    </a>
-                  </li>
-                ))}
+                {socials.map(([name, url]) => {
+                  const Glyph = SOCIAL_ICONS[name];
+                  return (
+                    <li key={name}>
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${site.name} on ${name}`}
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-edge bg-paper text-muted transition-all duration-300 hover:border-brand/50 hover:bg-brand hover:text-white"
+                      >
+                        {Glyph ? <Glyph className="h-4 w-4" /> : null}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>
 
           <FooterCol title="Services">
-            {ALL_SERVICES.slice(0, 9).map((s) => (
-              <li key={s}>
-                <Link href="/#services" className="link-underline text-muted hover:text-ink">
-                  {s}
+            {PILLARS.map((p) => (
+              <li key={p.slug}>
+                <Link
+                  href={`/services/#${p.slug}`}
+                  className="link-underline text-muted hover:text-ink"
+                >
+                  {p.title}
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href="/services/" className="link-underline font-medium text-brand">
+                All 21 services
+              </Link>
+            </li>
           </FooterCol>
 
           <FooterCol title="Company">
-            {[
-              { href: "/#services", label: "What we do" },
-              { href: "/#results", label: "Results" },
-              { href: "/#process", label: "How we work" },
-              { href: "/#visit", label: "Visit the office" },
-              { href: "/#faq", label: "FAQs" },
-              { href: "/blog/", label: "Insights" },
-              { href: "/#contact", label: "Free growth audit" },
-            ].map((l) => (
+            {COMPANY_LINKS.map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="link-underline text-muted hover:text-ink">
                   {l.label}
@@ -109,14 +145,18 @@ export function Footer() {
           <p className="text-[0.8rem] text-faint">
             © {year} {site.legalName}. All rights reserved.
           </p>
-          <div className="flex items-center gap-5 text-[0.8rem] text-faint">
-            <span>{site.hours.label}</span>
+          <div className="flex flex-wrap items-center gap-5 text-[0.8rem] text-faint">
+            <Link href="/contact/" className="link-underline inline-flex items-center gap-1.5 hover:text-brand">
+              Free growth audit
+              <IconArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
             <a
               href={whatsappLink(`Hi ${site.name}!`)}
               target="_blank"
               rel="noopener noreferrer"
-              className="link-underline hover:text-brand"
+              className="link-underline inline-flex items-center gap-1.5 hover:text-brand"
             >
+              <IconWhatsApp className="h-3.5 w-3.5" />
               WhatsApp us
             </a>
           </div>

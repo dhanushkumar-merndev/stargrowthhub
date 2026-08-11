@@ -1,4 +1,6 @@
 import Link from "next/link";
+
+import { IconArrowRight, IconClock } from "./Icons";
 import type { Post } from "@/lib/posts";
 
 export function formatDate(iso: string) {
@@ -43,7 +45,10 @@ export function PostCard({ post, featured = false }: { post: Post; featured?: bo
         <div className="mb-3 flex items-center gap-2.5 text-[0.72rem] text-faint">
           <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
           <span aria-hidden="true">·</span>
-          <span>{post.readingMinutes} min read</span>
+          <span className="inline-flex items-center gap-1">
+            <IconClock className="h-3 w-3" />
+            {post.readingMinutes} min read
+          </span>
         </div>
 
         <h3
@@ -62,12 +67,7 @@ export function PostCard({ post, featured = false }: { post: Post; featured?: bo
 
         <span className="mt-5 inline-flex items-center gap-1.5 text-[0.85rem] font-medium text-brand">
           Read the guide
-          <span
-            aria-hidden="true"
-            className="transition-transform duration-300 group-hover:translate-x-1"
-          >
-            →
-          </span>
+          <IconArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
         </span>
       </div>
     </article>

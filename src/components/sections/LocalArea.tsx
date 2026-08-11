@@ -1,4 +1,14 @@
+import Link from "next/link";
+
 import { Reveal, Eyebrow } from "../Reveal";
+import {
+  IconArrowRight,
+  IconClock,
+  IconDirections,
+  IconMail,
+  IconPhone,
+  IconPin,
+} from "../Icons";
 import { site, fullAddress, mapsDirectionsUrl, hasPhone } from "@/lib/site";
 
 // Keyless embed — no API key, no billing account, and it lazy-loads so it
@@ -25,7 +35,7 @@ export function LocalArea() {
             </p>
 
             <dl className="mt-8 grid gap-5 sm:grid-cols-2">
-              <InfoItem label="Address">
+              <InfoItem label="Address" icon={IconPin}>
                 <address className="not-italic leading-relaxed">
                   {site.address.street}
                   <br />
@@ -37,7 +47,7 @@ export function LocalArea() {
                 </address>
               </InfoItem>
 
-              <InfoItem label="Opening hours">
+              <InfoItem label="Opening hours" icon={IconClock}>
                 <span className="leading-relaxed">
                   {site.hours.label}
                   <br />
@@ -46,14 +56,14 @@ export function LocalArea() {
               </InfoItem>
 
               {hasPhone && (
-                <InfoItem label="Phone">
+                <InfoItem label="Phone" icon={IconPhone}>
                   <a href={site.phoneHref} className="link-underline hover:text-brand">
                     {site.phone}
                   </a>
                 </InfoItem>
               )}
 
-              <InfoItem label="Email">
+              <InfoItem label="Email" icon={IconMail}>
                 <a
                   href={`mailto:${site.email}`}
                   className="link-underline break-all hover:text-brand"
@@ -63,15 +73,24 @@ export function LocalArea() {
               </InfoItem>
             </dl>
 
-            <a
-              href={mapsDirectionsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-3.5 text-sm font-medium transition-all duration-300 hover:border-brand/50 hover:bg-brand-tint"
-            >
-              <PinIcon className="h-4 w-4 text-brand" />
-              Get directions on Google Maps
-            </a>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href={mapsDirectionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-3.5 text-sm font-medium transition-all duration-300 hover:border-brand/50 hover:bg-brand-tint"
+              >
+                <IconDirections className="h-4 w-4 text-brand" />
+                Get directions on Google Maps
+              </a>
+              <Link
+                href="/contact/"
+                className="group inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-3.5 text-sm font-medium transition-all duration-300 hover:border-brand/50 hover:bg-brand-tint"
+              >
+                Contact the team
+                <IconArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </div>
 
             <div className="mt-10 border-t border-edge pt-8">
               <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-faint">
@@ -109,27 +128,22 @@ export function LocalArea() {
   );
 }
 
-function InfoItem({ label, children }: { label: string; children: React.ReactNode }) {
+function InfoItem({
+  label,
+  icon: Icon,
+  children,
+}: {
+  label: string;
+  icon: (props: { className?: string }) => React.ReactElement;
+  children: React.ReactNode;
+}) {
   return (
     <div>
-      <dt className="mb-1.5 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-faint">
+      <dt className="mb-1.5 flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-faint">
+        <Icon className="h-3.5 w-3.5 text-brand" />
         {label}
       </dt>
       <dd className="text-[0.92rem] text-muted">{children}</dd>
     </div>
-  );
-}
-
-function PinIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
-      <path
-        d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="2" />
-    </svg>
   );
 }

@@ -1,27 +1,4 @@
-/** Every service listed on the Google Business Profile, verbatim. */
-export const ALL_SERVICES = [
-  "Search engine optimisation",
-  "Paid advertising",
-  "Social media marketing",
-  "Web design",
-  "Branding",
-  "Logo design",
-  "Graphic design",
-  "Lead generation",
-  "Pay-per-click consulting",
-  "Content management",
-  "Email marketing",
-  "Link building",
-  "Technical audits",
-  "Affiliate marketing",
-  "Business to business",
-  "Direct mail",
-  "Outdoor advertising",
-  "Billboard design and consulting",
-  "Print ads",
-  "Digital marketing",
-  "Online service",
-] as const;
+import { SERVICE_NAMES } from "@/lib/services";
 
 export function Marquee() {
   return (
@@ -39,7 +16,7 @@ export function Marquee() {
               className="flex items-center gap-3"
               aria-hidden={pass === 1 ? "true" : undefined}
             >
-              {ALL_SERVICES.map((s) => (
+              {SERVICE_NAMES.map((s) => (
                 <li
                   key={s}
                   className="flex shrink-0 items-center gap-2.5 whitespace-nowrap rounded-full border border-edge bg-paper px-4 py-2 text-[0.82rem] text-muted"

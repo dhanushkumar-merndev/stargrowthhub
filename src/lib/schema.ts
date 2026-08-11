@@ -149,13 +149,17 @@ export function articleSchema(post: {
   };
 }
 
-export function serviceSchema(name: string, description: string) {
+export function serviceSchema(name: string, description: string, slug?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
     name,
     description,
+    // Anchors the entity to the section of /services that describes it, so
+    // Google can associate the two rather than treating them as unrelated.
+    ...(slug ? { url: `${site.url}/services/#${slug}` } : {}),
+    serviceType: name,
     provider: { "@id": ORG_ID },
-    areaServed: { "@type": "City", name: "Bengaluru" },
+    areaServed: { "@type": "City", name: site.address.city },
   };
 }

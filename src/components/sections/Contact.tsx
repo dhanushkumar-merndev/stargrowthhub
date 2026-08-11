@@ -1,6 +1,9 @@
+import Link from "next/link";
+
 import { Reveal, Eyebrow } from "../Reveal";
 import { LeadForm } from "../LeadForm";
-import { site, whatsappLink, hasPhone } from "@/lib/site";
+import { IconArrowRight, IconCheck, IconMail, IconPhone } from "../Icons";
+import { site, hasPhone } from "@/lib/site";
 
 const ASSURANCES = [
   "A written audit within 48 hours — yours to keep either way",
@@ -38,15 +41,7 @@ export function Contact() {
               {ASSURANCES.map((a) => (
                 <li key={a} className="flex items-start gap-3 text-[0.92rem] text-muted">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand text-white">
-                    <svg viewBox="0 0 20 20" fill="none" className="h-3 w-3" aria-hidden="true">
-                      <path
-                        d="m4 10.5 4 4 8-9"
-                        stroke="currentColor"
-                        strokeWidth="2.4"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <IconCheck className="h-3 w-3" />
                   </span>
                   {a}
                 </li>
@@ -59,7 +54,7 @@ export function Contact() {
                   href={site.phoneHref}
                   className="inline-flex items-center gap-2.5 rounded-full border border-ink/15 bg-paper px-6 py-3.5 text-sm font-medium transition-all duration-300 hover:border-ink/40"
                 >
-                  <PhoneIcon className="h-4 w-4 text-brand" />
+                  <IconPhone className="h-4 w-4 text-brand" />
                   {site.phone}
                 </a>
               )}
@@ -67,8 +62,16 @@ export function Contact() {
                 href={`mailto:${site.email}`}
                 className="inline-flex items-center gap-2.5 rounded-full border border-ink/15 bg-paper px-6 py-3.5 text-sm font-medium transition-all duration-300 hover:border-brand/50 hover:bg-brand-tint"
               >
+                <IconMail className="h-4 w-4 text-brand" />
                 {site.email}
               </a>
+              <Link
+                href="/contact/"
+                className="group inline-flex items-center gap-2 rounded-full border border-ink/15 bg-paper px-6 py-3.5 text-sm font-medium transition-all duration-300 hover:border-brand/50 hover:bg-brand-tint"
+              >
+                Visit the office
+                <IconArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
             </div>
           </Reveal>
 
@@ -78,52 +81,5 @@ export function Contact() {
         </div>
       </div>
     </section>
-  );
-}
-
-/** Full-width red band that closes the page. */
-export function ClosingBanner() {
-  return (
-    <section className="relative isolate overflow-hidden bg-brand">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-25"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 15% 20%, rgba(255,255,255,0.5), transparent 45%), radial-gradient(circle at 85% 80%, rgba(255,255,255,0.35), transparent 45%)",
-        }}
-      />
-      <div className="relative mx-auto flex max-w-7xl flex-col items-start gap-8 px-5 py-16 sm:px-8 sm:py-20 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <h2 className="text-balance-tight max-w-2xl font-display text-[clamp(1.8rem,4vw,2.7rem)] font-semibold leading-[1.12] tracking-[-0.03em] text-white">
-            Every day you&apos;re not on page one, a competitor is taking that call.
-          </h2>
-          <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-white/80">
-            {site.hours.label} · {site.address.locality}, {site.address.city}
-          </p>
-        </div>
-        <a
-          href={whatsappLink(`Hi ${site.name}! I'd like to book a free growth audit.`)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-shine shrink-0 rounded-full bg-white px-8 py-4 font-semibold text-brand transition-transform duration-300 hover:scale-[1.04]"
-        >
-          Start with a free audit
-        </a>
-      </div>
-    </section>
-  );
-}
-
-function PhoneIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
-      <path
-        d="M5 3h3l2 5-2.5 1.5a12 12 0 0 0 5 5L14 12l5 2v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.2 2 2 0 0 1 5 3Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }

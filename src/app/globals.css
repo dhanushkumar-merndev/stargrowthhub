@@ -86,6 +86,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Enlarge the desktop UI to the same visual scale as 133% browser zoom,
+   without changing the tablet and mobile breakpoints. */
+@media (min-width: 1024px) {
+  html {
+    zoom: 1.33;
+  }
+}
+
 ::selection {
   background: var(--color-brand);
   color: #fff;

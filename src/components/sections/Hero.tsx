@@ -1,8 +1,10 @@
+import Link from "next/link";
+
 import { site, whatsappLink, mapsDirectionsUrl } from "@/lib/site";
 import { Backdrop } from "../Backdrop";
 import { Counter } from "../Counter";
 import { GlobeArcs } from "../GlobeArcs";
-import { WhatsAppGlyph } from "../LeadForm";
+import { IconArrowDown, IconArrowRight, IconStar, IconWhatsApp } from "../Icons";
 
 export function Hero() {
   return (
@@ -20,7 +22,7 @@ export function Hero() {
             className="mb-7 inline-flex items-center gap-3 rounded-full border border-edge bg-paper py-1.5 pl-2 pr-4 shadow-sm"
           >
             <span className="flex items-center gap-1 rounded-full bg-brand-tint px-2.5 py-1 text-[0.72rem] font-semibold text-brand">
-              <StarIcon className="h-3 w-3" />
+              <IconStar className="h-3 w-3" />
               {site.rating.value}
             </span>
             <span className="text-[0.78rem] text-muted">
@@ -60,16 +62,16 @@ export function Hero() {
               rel="noopener noreferrer"
               className="btn-shine inline-flex items-center justify-center gap-2.5 rounded-full bg-brand px-6 py-4 text-[0.95rem] font-semibold text-white shadow-[0_14px_30px_-12px_rgba(224,27,45,0.65)] transition-all duration-300 hover:bg-brand-deep hover:scale-[1.03] sm:px-7 sm:text-base"
             >
-              <WhatsAppGlyph className="h-5 w-5 shrink-0" />
+              <IconWhatsApp className="h-5 w-5 shrink-0" />
               Get your free growth audit
             </a>
-            <a
-              href="#services"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 px-6 py-4 text-[0.95rem] font-medium text-ink transition-all duration-300 hover:border-ink/40 hover:bg-paper-3 sm:px-7 sm:text-base"
+            <Link
+              href="/services/"
+              className="group inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 px-6 py-4 text-[0.95rem] font-medium text-ink transition-all duration-300 hover:border-ink/40 hover:bg-paper-3 sm:px-7 sm:text-base"
             >
               See what we do
-              <span aria-hidden="true">↓</span>
-            </a>
+              <IconArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+            </Link>
           </div>
 
           <dl
@@ -159,9 +161,7 @@ function GlobeShowcase() {
             {site.address.locality}, {site.address.city} {site.address.postalCode}
           </span>
         </span>
-        <span aria-hidden="true" className="text-faint">
-          →
-        </span>
+        <IconArrowRight className="h-4 w-4 shrink-0 text-faint" />
       </a>
     </div>
   );
@@ -188,13 +188,5 @@ function Callout({
         {children}
       </p>
     </div>
-  );
-}
-
-export function StarIcon({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 20 20" fill="currentColor" className={className} aria-hidden="true">
-      <path d="M10 1.5l2.47 5.36 5.86.7-4.33 4.01 1.15 5.79L10 14.5l-5.15 2.86 1.15-5.79L1.67 7.56l5.86-.7L10 1.5z" />
-    </svg>
   );
 }

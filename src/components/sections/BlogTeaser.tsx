@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Reveal, Eyebrow } from "../Reveal";
 import { PostCard } from "../PostCard";
+import { IconArrowRight } from "../Icons";
 import { sortedPosts } from "@/lib/posts";
 
 export function BlogTeaser() {
@@ -20,10 +21,10 @@ export function BlogTeaser() {
           <Reveal delay={80}>
             <Link
               href="/blog/"
-              className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-3.5 text-sm font-medium transition-all duration-300 hover:border-brand/50 hover:bg-brand-tint"
+              className="group inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-3.5 text-sm font-medium transition-all duration-300 hover:border-brand/50 hover:bg-brand-tint"
             >
               All articles
-              <span aria-hidden="true">→</span>
+              <IconArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </Reveal>
         </div>
