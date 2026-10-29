@@ -9,7 +9,7 @@ deploys free to Cloudflare Pages.
 ```bash
 pnpm install
 pnpm dev        # http://localhost:3000
-pnpm build      # -> ./out  (18 static pages)
+pnpm build      # -> ./out  (20 static pages)
 pnpm preview    # build, then serve ./out locally
 ```
 
@@ -30,6 +30,7 @@ carries a condensed version of each and links through.
 | `/faq/` | 24 questions in six groups, with `FAQPage` structured data | [`src/lib/faqs.ts`](src/lib/faqs.ts) |
 | `/contact/` | Enquiry form, direct channels, map, travel directions, areas served | [`src/lib/site.ts`](src/lib/site.ts) |
 | `/blog/`, `/blog/<slug>/` | Insights index and articles | [`src/lib/posts.ts`](src/lib/posts.ts) |
+| `/privacy/`, `/terms/` | Privacy policy (DPDP Act, 2023) and terms of service, linked from the footer and the enquiry form | [`src/lib/legal.ts`](src/lib/legal.ts) |
 
 Every page shares [`PageHero`](src/components/PageHero.tsx) for its masthead and
 breadcrumb, and closes with [`CtaBand`](src/components/sections/CtaBand.tsx).

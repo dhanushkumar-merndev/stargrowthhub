@@ -10,7 +10,11 @@ export const dynamic = "force-static";
  * page, then the two commercial pages a searcher lands on from a service
  * query, then supporting pages, then articles.
  */
-const ROUTES: { path: string; priority: number; changeFrequency: "weekly" | "monthly" }[] = [
+const ROUTES: {
+  path: string;
+  priority: number;
+  changeFrequency: "weekly" | "monthly" | "yearly";
+}[] = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
   { path: "/services/", priority: 0.9, changeFrequency: "monthly" },
   { path: "/contact/", priority: 0.9, changeFrequency: "monthly" },
@@ -19,6 +23,8 @@ const ROUTES: { path: string; priority: number; changeFrequency: "weekly" | "mon
   { path: "/process/", priority: 0.7, changeFrequency: "monthly" },
   { path: "/about/", priority: 0.7, changeFrequency: "monthly" },
   { path: "/faq/", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/privacy/", priority: 0.3, changeFrequency: "yearly" },
+  { path: "/terms/", priority: 0.3, changeFrequency: "yearly" },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

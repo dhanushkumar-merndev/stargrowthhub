@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 import { IconCheck, IconChevronDown, IconSend, IconWhatsApp } from "./Icons";
 import { site, whatsappLink } from "@/lib/site";
@@ -245,7 +246,10 @@ export function LeadForm() {
 
       <p className="mt-4 text-center text-xs leading-relaxed text-faint">
         Opens WhatsApp with your details filled in. No spam, no call centre — you talk
-        directly to the team. Typical reply time: under 2 working hours.
+        directly to the team. Typical reply time: under 2 working hours.{" "}
+        <Link href="/privacy/" className="underline underline-offset-2 hover:text-muted">
+          How we handle your details
+        </Link>
       </p>
     </form>
   );

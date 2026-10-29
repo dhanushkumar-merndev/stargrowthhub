@@ -146,6 +146,12 @@ export function Footer() {
             © {year} {site.legalName}. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center gap-5 text-[0.8rem] text-faint">
+            <Link href="/privacy/" className="link-underline hover:text-brand">
+              Privacy
+            </Link>
+            <Link href="/terms/" className="link-underline hover:text-brand">
+              Terms
+            </Link>
             <Link href="/contact/" className="link-underline inline-flex items-center gap-1.5 hover:text-brand">
               Free growth audit
               <IconArrowUpRight className="h-3.5 w-3.5" />
